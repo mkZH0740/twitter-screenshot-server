@@ -30,6 +30,10 @@ export async function loadPage(page: Page, url: string) {
       errMessage = `loadPage -> load tweet page failed, possible deleted tweet`;
       loadFinished = false;
     });
+    await expandHiddenImages(page).catch((err) => {
+      errMessage = `loadPage -> expand hidden image failed with error ${err}`;
+      loadFinished = false;
+    });
   }
 
   return {
@@ -46,4 +50,29 @@ export async function setViewPort(page: Page) {
     };
   });
   await page.setViewportSize(viewport);
+}
+
+async function expandHiddenImages(page: Page) {
+  await page.evaluate(() => {
+    const articles = document.querySelectorAll('article');
+    for (let i = 0; i < articles.length; i++) {
+      const article = articles[i];
+      const buttons = article.querySelectorAll('div[role=button]');
+      for (let j = 0; j < buttons.length; j++) {
+        const button = buttons[j];
+        if (
+          button != null &&
+          button.firstChild.firstChild.firstChild.textContent == 'View'
+        ) {
+          console.log(`article ${i + 1} has a button`);
+          const event = new MouseEvent('click', {
+            view: window,
+            bubbles: true,
+            cancelable: false,
+          });
+          button.dispatchEvent(event);
+        }
+      }
+    }
+  });
 }
