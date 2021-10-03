@@ -99,8 +99,11 @@ async function insertCustomContent(
     // make custom tag element and load custom tag
     if (contents.tag != '') {
       const translationBoard = article.querySelector('.translation');
-      const tagContainer = document.createElement('img');
-      tagContainer.src = contents.tag;
+      const tagImage = document.createElement('img');
+      tagImage.src = contents.tag;
+      tagImage.className = 'tag';
+      const tagContainer = document.createElement('div');
+      tagContainer.appendChild(tagImage);
       translationBoard.prepend(tagContainer);
     }
     // set tweet article background
@@ -116,7 +119,6 @@ export async function addTranslation(
   const translationBlocks = await solveTranslationBlock(
     translationRequestDTO.translation,
   );
-  console.log(translationBlocks);
   const articles = await page.$$('article');
   for (let i = 0; i < translationBlocks.length; i++) {
     const translationBlock = translationBlocks[i];
