@@ -35,7 +35,7 @@ export async function rawGetScreenshot(page: Page) {
     }
 
     if (requireLineNumber) {
-      text += `line No. ${i + 1}: ${currText}`;
+      text += `第${i + 1}行： ${currText}`;
     } else {
       text += currText;
     }

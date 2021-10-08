@@ -23,7 +23,7 @@ export class TranslateService {
     );
     const page = await getPage();
     const loadResult = await loadPage(page, url);
-    let translateResponse: TranslateResponse = null;
+    let translateResponse: TranslateResponse;
     this.translateLogger.debug(
       `load page completed, result: ${JSON.stringify(loadResult)}`,
     );
@@ -63,6 +63,7 @@ export class TranslateService {
     this.translateLogger.debug(
       `ready to return screenshot, result: ${translateResponse}`,
     );
+    await page.close();
     return translateResponse;
   }
 }

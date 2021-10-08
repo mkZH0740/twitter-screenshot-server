@@ -60,10 +60,7 @@ async function expandHiddenImages(page: Page) {
       const buttons = article.querySelectorAll('div[role=button]');
       for (let j = 0; j < buttons.length; j++) {
         const button = buttons[j];
-        if (
-          button != null &&
-          button.firstChild.firstChild.firstChild.textContent == 'View'
-        ) {
+        if (button != null && button.textContent == 'View') {
           console.log(`article ${i + 1} has a button`);
           const event = new MouseEvent('click', {
             view: window,
@@ -75,4 +72,5 @@ async function expandHiddenImages(page: Page) {
       }
     }
   });
+  await new Promise((resolve) => setTimeout(resolve, 2000));
 }
