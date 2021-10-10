@@ -12,6 +12,9 @@ export async function getBrowser(): Promise<Browser> {
 
 export async function getPage() {
   const browser = await getBrowser();
-  if (userContext == null) userContext = await browser.newContext();
+  if (userContext == null) {
+    userContext = await browser.newContext();
+    await userContext.newPage();
+  }
   return await userContext.newPage();
 }

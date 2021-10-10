@@ -50,6 +50,7 @@ async function insertTranslationBlock(
   article: ElementHandle,
   translationContent: string,
 ) {
+  translationContent = translationContent.replace(/\n/gm, '<br/>');
   await article.$eval(
     'div[lang]',
     (childElement, contentHTML) => {

@@ -26,7 +26,7 @@ export async function loadPage(page: Page, url: string) {
     }
   }
   if (loadFinished) {
-    await page.waitForSelector('article', { timeout: 1000 }).catch(() => {
+    await page.waitForSelector('article').catch(() => {
       errMessage = `loadPage -> load tweet page failed, possible deleted tweet`;
       loadFinished = false;
     });
