@@ -108,8 +108,12 @@ async function insertCustomContent(
       translationBoard.prepend(tagContainer);
     }
     // set tweet article background
-    if (contents.background != '')
-      article.parentElement.style.backgroundImage = `url(${contents.background})`;
+    if (contents.background != '') {
+      const section = document.querySelector('section');
+      section.style.backgroundImage = `url(${contents.background})`;
+      section.style.backgroundRepeat = 'no-repeat';
+      section.style.backgroundSize = '100% auto';
+    }
   }, customFileContents);
 }
 

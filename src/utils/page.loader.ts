@@ -3,10 +3,9 @@ import { Page } from 'playwright';
 export async function loadPage(page: Page, url: string) {
   let loadFinished = false;
   let errMessage = '';
-  await page.setDefaultTimeout(8000);
   for (let i = 0; i < 3 && !loadFinished; i++) {
     if (i == 0) {
-      await page.goto(url, { waitUntil: 'networkidle' }).then(
+      await page.goto(url, { waitUntil: 'domcontentloaded' }).then(
         () => {
           loadFinished = true;
         },
@@ -15,7 +14,7 @@ export async function loadPage(page: Page, url: string) {
         },
       );
     } else {
-      await page.reload({ waitUntil: 'networkidle' }).then(
+      await page.reload({ waitUntil: 'domcontentloaded' }).then(
         () => {
           loadFinished = true;
         },
@@ -30,6 +29,18 @@ export async function loadPage(page: Page, url: string) {
       errMessage = `loadPage -> load tweet page failed, possible deleted tweet`;
       loadFinished = false;
     });
+    let count = 0;
+    let imageLoaded = false;
+    while (!imageLoaded && count < 100) {
+      const images = await page.$$('img');
+      for (let i = 0; i < images.length; i++) {
+        const image = images[i];
+        imageLoaded = await (await image.getProperty('complete')).jsonValue();
+        console.log(imageLoaded);
+        count++;
+        await new Promise((resolve) => setTimeout(resolve, 250));
+      }
+    }
     await expandHiddenImages(page).catch((err) => {
       errMessage = `loadPage -> expand hidden image failed with error ${err}`;
       loadFinished = false;

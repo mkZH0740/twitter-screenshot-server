@@ -45,6 +45,7 @@ export class TranslateService {
           addTranslationResult,
         )}`,
       );
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       if (addTranslationResult.type != 'ok') {
         translateResponse = {
           type: addTranslationResult.type,
