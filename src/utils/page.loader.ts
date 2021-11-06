@@ -36,7 +36,6 @@ export async function loadPage(page: Page, url: string) {
       for (let i = 0; i < images.length; i++) {
         const image = images[i];
         imageLoaded = await (await image.getProperty('complete')).jsonValue();
-        console.log(imageLoaded);
         count++;
         await new Promise((resolve) => setTimeout(resolve, 250));
       }
